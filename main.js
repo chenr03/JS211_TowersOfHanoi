@@ -30,10 +30,11 @@ const printStacks = () => {
 }
 
 // Next, what do you think this function should do?
-const movePiece = (startStack,startNumber, endStack) => {
-  console.log(startStack)
-  console.log(startNumber)
-  console.log(endStack)
+const movePiece = (startStack, endStack) => {
+  let startNumber = (startStack === 'a') ? stacks.a[stacks.a.length-1] : (startStack === 'b') ? stacks.b[stacks.b.length-1] : stacks.c[stacks.c.length-1];
+  console.log('startStack:', startStack)
+  console.log('startNumber:', startNumber)
+  console.log('endStack:', endStack)
 
   // console.log('NEW stacks:', stacks);
   //move the end piece of the startStack
@@ -46,24 +47,21 @@ const movePiece = (startStack,startNumber, endStack) => {
     stacks[endStack].push(startNumber);
     count++;
   }
+
   if (count === 30) {
     throw `Game Over! Maximum moves played: ${count}.`
   }
 }
 
-// Before you move, should you check if the move it actually allowed? Should 3 be able to be stacked on 2 - This test is failing, but my code is correct.
-const isLegal = (start, end) => {
-  console.log("start:", start)
-  console.log("end:", end)
-  if (start < end || end === undefined) {
-    return true;
-  } else {
-    return false;
-  }
+// Before you move, should you check if the move it actually allowed?
+const isLegal = (startStack, endStack) => {
+  let startNumber = (startStack === 'a') ? stacks.a[stacks.a.length-1] : (startStack === 'b') ? stacks.b[stacks.b.length-1] : stacks.c[stacks.c.length-1];
+  let endNumber = (endStack === 'b') ? stacks.b[stacks.b.length-1] : (endStack === 'c') ? stacks.c[stacks.c.length-1] : stacks.a[stacks.a.length-1];
+  return startNumber < endNumber || endNumber === undefined;
 
   // is startStack < endStack? yes
   // is the endStack empty? yes
-  // Can i try to move the piece to the same stack? no
+  // Can I try to move the piece to the same stack? no
   // if it's not ok, display "invalid move"
 }
 
@@ -85,13 +83,9 @@ const towersOfHanoi = (startStack, endStack) => {
   // ? if
   // left side is going to work if true || right side going to work if it's falsy
 
-  let startNumber = (startStack === 'a') ? stacks.a[stacks.a.length-1] : (startStack === 'b') ? stacks.b[stacks.b.length-1] : stacks.c[stacks.c.length-1];
-  let endNumber = (endStack === 'b') ? stacks.b[stacks.b.length-1] : (endStack === 'c') ? stacks.c[stacks.c.length-1] : stacks.a[stacks.a.length-1];
-  console.log('--------start:', startStack, startNumber);
-  console.log('--------end:', endStack, endNumber);
-  if (isLegal(startNumber, endNumber)) {
+  if (isLegal(startStack, endStack)) {
     console.log("It's legal!");
-    movePiece(startStack, startNumber, endStack);
+    movePiece(startStack, endStack);
   } else {
     console.log('Invalid move. Try again!');
   }
@@ -112,7 +106,6 @@ const getPrompt = () => {
 }
 
 // Tests
-
 if (typeof describe === 'function') {
 
   describe('#towersOfHanoi()', () => {
@@ -154,4 +147,3 @@ if (typeof describe === 'function') {
 } else {
   getPrompt();
 }
-
