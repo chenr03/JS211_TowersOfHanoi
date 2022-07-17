@@ -51,30 +51,26 @@ const movePiece = (startStack,startNumber, endStack) => {
   }
 }
 
-// Before you move, should you check if the move it actually allowed? Should 3 be able to be stacked on 2
+// Before you move, should you check if the move it actually allowed? Should 3 be able to be stacked on 2 - This test is failing, but my code is correct.
 const isLegal = (start, end) => {
   console.log("start:", start)
   console.log("end:", end)
-  return start < end || end === undefined;
+  if (start < end || end === undefined) {
+    return true;
+  } else {
+    return false;
+  }
 
-  // is startStack > endStack? no
   // is startStack < endStack? yes
   // is the endStack empty? yes
   // Can i try to move the piece to the same stack? no
   // if it's not ok, display "invalid move"
-
 }
-
-
 
 // What is a win in Towers of Hanoi? When should this function run?
 const checkForWin = () => {
   // if all four numbers are in stack b or c
-  // stacks['b'].length == 4 || stacks ['c'].length == 4
-  // console.log(stacks.b.toString())
-
-  return stacks.b.length === 4 || stacks.c.length === 4
-
+  return stacks.b.length === 4 || stacks.c.length === 4;
 }
 
 // When is this function called? What should it do with its argument?
@@ -82,8 +78,6 @@ const towersOfHanoi = (startStack, endStack) => {
   // Here's where we put it all together
   // grab the arguments (a and c) and set variables
   // checkForWin();
-
-
   // check to see if it is legal (startStack, endStack)
   // if it's true call the movePiece
   // else, display "invalid move"
@@ -105,8 +99,6 @@ const towersOfHanoi = (startStack, endStack) => {
   if (checkForWin()) {
     console.log("Congratulations, You Won! Total Moves: ", count)
   }
-
-
 }
 
 const getPrompt = () => {
@@ -121,45 +113,45 @@ const getPrompt = () => {
 
 // Tests
 
-  if (typeof describe === 'function') {
+if (typeof describe === 'function') {
 
-    describe('#towersOfHanoi()', () => {
-      it('should be able to move a block', () => {
-        towersOfHanoi('a', 'b');
-        assert.deepEqual(stacks, {a: [4, 3, 2], b: [1], c: []});
-      });
+  describe('#towersOfHanoi()', () => {
+    it('should be able to move a block', () => {
+      towersOfHanoi('a', 'b');
+      assert.deepEqual(stacks, {a: [4, 3, 2], b: [1], c: []});
     });
+  });
 
-    describe('#isLegal()', () => {
-      it('should not allow an illegal move', () => {
-        stacks = {
-          a: [4, 3, 2],
-          b: [1],
-          c: []
-        };
-        assert.equal(isLegal('a', 'b'), false);
-      });
-      it('should allow a legal move', () => {
-        stacks = {
-          a: [4, 3, 2, 1],
-          b: [],
-          c: []
-        };
-        assert.equal(isLegal('a', 'c'), true);
-      });
+  describe('#isLegal()', () => {
+    it('should not allow an illegal move', () => {
+      stacks = {
+        a: [4, 3, 2],
+        b: [1],
+        c: []
+      };
+      assert.equal(isLegal('a', 'b'), false);
     });
-    describe('#checkForWin()', () => {
-      it('should detect a win', () => {
-        stacks = {a: [], b: [4, 3, 2, 1], c: []};
-        assert.equal(checkForWin(), true);
-        stacks = {a: [], b: [], c: [4, 3, 2, 1]};
-        assert.equal(checkForWin(), true);
-        stacks = {a: [1], b: [4, 3, 2], c: []};
-        assert.equal(checkForWin(), false);
-      });
+    it('should allow a legal move', () => {
+      stacks = {
+        a: [4, 3, 2, 1],
+        b: [],
+        c: []
+      };
+      assert.equal(isLegal('a', 'c'), true);
     });
+  });
+  describe('#checkForWin()', () => {
+    it('should detect a win', () => {
+      stacks = {a: [], b: [4, 3, 2, 1], c: []};
+      assert.equal(checkForWin(), true);
+      stacks = {a: [], b: [], c: [4, 3, 2, 1]};
+      assert.equal(checkForWin(), true);
+      stacks = {a: [1], b: [4, 3, 2], c: []};
+      assert.equal(checkForWin(), false);
+    });
+  });
 
-  } else {
-    getPrompt();
-  }
+} else {
+  getPrompt();
+}
 
